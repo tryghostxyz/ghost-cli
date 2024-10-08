@@ -1,0 +1,26 @@
+[package]
+name = "ghost"
+description = "CLI for Ghost"
+version = "0.0.1"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+homepage = "https://tryghost.xyz"
+repository = "https://github.com/tryghostxyz/ghost-cli"
+
+[dependencies]
+clap = { version = "4.5.18", features = ["derive"] }
+reqwest = { version = "0.11", features = ["json"] }
+tokio = { version = "1", features = ["full"] }
+dotenv = "0.15"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+dirs = "4.0"
+toolstr = "0.1.5"
+thiserror = "1.0.64"
+lazy_static = { version = "1.5.0", features = [] }
+eyre = "0.6.12"
+dunce = "1.0.5"
+yansi = "1.0.1"
+color-eyre = "0.6.3"
+tracing = "0.1.40"
+chrono = "0.4.38"
