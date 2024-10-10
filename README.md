@@ -1,8 +1,8 @@
 # Ghost CLI
 
-The Ghost CLI is a command-line interface tool for interacting with the Ghost server. It provides various
-functionalities, including configuring your API key, initializing new Ghost graphs, generating code, compiling, and
-deploying graphs to the Ghost server.
+`ghost-cli` is a command-line tool for interacting with the Ghost server.
+ 
+You can now fork and edit graphs locally which means you can use any editor (and AI tool!) to work on your indexers.
 
 ## Installation
 
