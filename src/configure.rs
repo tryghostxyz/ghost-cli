@@ -106,7 +106,7 @@ impl Config {
 pub fn set_api_key(api_key: &str) -> Result<(), ConfigError> {
     let config = Config { api_key: api_key.to_string() };
     config.save()?;
-    println!("API key saved successfully in {:?}", Config::config_path());
+    println!("API key saved successfully in");
     Ok(())
 }
 
