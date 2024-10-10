@@ -55,7 +55,7 @@ enum Commands {
 }
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
+async fn main() -> eyre::Result<()> {
     dotenv().ok();
     let enable = yansi::Condition::os_support();
     yansi::whenever(yansi::Condition::cached(enable));
@@ -106,7 +106,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         Some(Commands::Fork(cmd)) => {
             cmd.run(&api_service).await?;
         }
-
         _ => {}
     }
 
