@@ -1,7 +1,7 @@
 # Ghost CLI
 
 `ghost-cli` is a command-line tool for interacting with the Ghost server.
- 
+
 You can now fork and edit graphs locally which means you can use any editor (and AI tool!) to work on your indexers.
 
 ## Installation
@@ -38,6 +38,7 @@ ghost configure <API_KEY>
 ```
 
 To generate an API key, visit [Ghost Graphs](https://app.ghostlogs.xyz/graphs) and click the "API Key" button.
+You must use an admin API key to configure.
 
 ### Create a Ghost Graph
 
