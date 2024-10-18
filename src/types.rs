@@ -15,6 +15,7 @@ pub enum Chain {
     BeraTestnet,
     BlastMainnet,
     AbstractTestnet,
+    UniTestnet,
 }
 
 impl Chain {
@@ -27,6 +28,7 @@ impl Chain {
             Chain::BeraTestnet => CHAIN_BERA_TESTNET,
             Chain::BlastMainnet => CHAIN_BLAST,
             Chain::AbstractTestnet => CHAIN_ABS_TESTNET,
+            Chain::UniTestnet => CHAIN_UNI_TESTNET,
         }
     }
 
@@ -39,6 +41,7 @@ impl Chain {
             "bera",
             "blast",
             "abstract",
+            "uni-testnet",
         ]
     }
 }
@@ -61,6 +64,7 @@ impl TryFrom<u64> for Chain {
             CHAIN_BERA_TESTNET => Ok(Self::BeraTestnet),
             CHAIN_BLAST => Ok(Self::BlastMainnet),
             CHAIN_ABS_TESTNET => Ok(Self::AbstractTestnet),
+            CHAIN_UNI_TESTNET => Ok(Self::UniTestnet),
             _ => Err(format!("Unsupported chain id: {}", value)),
         }
     }
@@ -82,6 +86,7 @@ impl FromStr for Chain {
                 "bera-testnet" | "bera" => Ok(Self::BeraTestnet),
                 "blast-mainnet" | "blast" => Ok(Self::BlastMainnet),
                 "abstract-testnet" | "abstract" => Ok(Self::AbstractTestnet),
+                "uni-testnet" => Ok(Self::UniTestnet),
                 _ => Err(format!(
                     "Unsupported chain name: {}. Valid options are: {}",
                     s,

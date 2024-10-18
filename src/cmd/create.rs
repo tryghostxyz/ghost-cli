@@ -15,7 +15,7 @@ pub struct CreateCmd {
     #[arg(
         long,
         short,
-        help = "Specify the chain. Options: eth-mainnet, eth-sepolia, base-mainnet, base-sepolia, bera-testnet, blast-mainnet, abstract-testnet, or chain id"
+        help = "Specify the chain. Options: eth-mainnet, eth-sepolia, base-mainnet, base-sepolia, bera-testnet, blast-mainnet, abstract-testnet, uni-testnet or chain id"
     )]
     pub chain: Chain,
 
