@@ -14,7 +14,6 @@ pub struct EtherscanClient {
 impl EtherscanClient {
     pub fn new(chain: Chain) -> eyre::Result<Self> {
         let mut client = Client::new_from_env(chain.alloy())?;
-        client.set_cache("data/etherscan_cache", Duration::from_secs(3600));
         if let Some(cache) = cache_path() {
             client.set_cache(cache, Duration::from_secs(3600));
         }
