@@ -6,6 +6,7 @@ use alloy_json_abi::Event;
 use alloy_primitives::Address;
 use clap::Parser;
 use eyre::OptionExt;
+use std::env;
 
 #[derive(Clone, Debug, Default, Parser)]
 pub struct EventsCommand {
@@ -20,6 +21,7 @@ impl EventsCommand {
     pub async fn run(self, api: &ApiService) -> eyre::Result<()> {
         let config = check_and_get_conf(&[], api).await?;
         let chain = config.chain.ok_or_eyre("no chain found")?;
+        env::set_var("ETHERSCAN_API_KEY", self.api_key);
         let client = EtherscanClient::new(chain)?;
         let abi = client.fetch_abi(self.address).await?;
         let ev: Vec<Event> =
