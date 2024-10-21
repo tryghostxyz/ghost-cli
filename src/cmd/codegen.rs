@@ -13,7 +13,7 @@ pub struct CodegenCmd {}
 
 impl CodegenCmd {
     pub async fn run(self, api: &ApiService) -> eyre::Result<()> {
-        let config = check_and_get_conf(&["src/schema.sol", "src/events.sol"])?;
+        let config = check_and_get_conf(&["src/schema.sol", "src/events.sol"], api).await?;
         println!("Running codegen for id={}", config.version_id);
 
         let payload = CodegenRequest {

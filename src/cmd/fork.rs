@@ -28,7 +28,7 @@ impl ForkCmd {
             .or_else(|| dir.file_name().and_then(|os_str| os_str.to_str()).map(|s| s.to_string()));
         let resp = api.fork_graph(&id, &ForkRequest { name }).await?;
         println!("Graph has been successfully forked. Setting up local files...");
-        write_sources_and_conf(&dir, resp.id, resp.version_id, resp.sources)?;
+        write_sources_and_conf(&dir, resp.id, resp.version_id, None, resp.sources)?;
         println!("done! Check the {:?} directory", dir);
         Ok(())
     }

@@ -45,7 +45,7 @@ impl CreateCmd {
             resp.version_id
         );
         println!("\nInitializing files...");
-        write_sources_and_conf(&dir, resp.id, resp.version_id, resp.sources)?;
+        write_sources_and_conf(&dir, resp.id, resp.version_id, Some(chain), resp.sources)?;
         println!("done! Check the {:?} directory", dir);
 
         Ok(())

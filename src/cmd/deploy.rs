@@ -9,7 +9,7 @@ pub struct DeployCmd {}
 
 impl DeployCmd {
     pub async fn run(self, api: &ApiService) -> eyre::Result<()> {
-        let config = check_and_get_conf(&[])?;
+        let config = check_and_get_conf(&[], api).await?;
         println!("Running deploy for id={}", config.version_id);
 
         let resp = api.deploy(&config.version_id).await?;

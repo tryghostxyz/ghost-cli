@@ -1,12 +1,11 @@
+use crate::constants::*;
+use alloy_chains::Chain as AlloyChain;
+use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 use std::str::FromStr;
 use std::{fmt, fs};
 
-use serde::{Deserialize, Serialize};
-
-use crate::constants::*;
-
-#[derive(Clone, Debug)]
+#[derive(Copy, Clone, Debug, Serialize, Deserialize)]
 pub enum Chain {
     EthMainnet,
     EthSepolia,
@@ -30,6 +29,10 @@ impl Chain {
             Chain::AbstractTestnet => CHAIN_ABS_TESTNET,
             Chain::UniTestnet => CHAIN_UNI_TESTNET,
         }
+    }
+
+    pub fn alloy(&self) -> AlloyChain {
+        AlloyChain::from_id(self.chain_id())
     }
 
     pub fn options() -> Vec<&'static str> {
@@ -101,6 +104,7 @@ impl FromStr for Chain {
 pub struct GraphConfig {
     pub id: String,
     pub version_id: String,
+    pub chain: Option<Chain>,
 }
 
 impl GraphConfig {
@@ -251,4 +255,9 @@ pub struct Graph {
 pub struct ListResponse {
     pub err: Option<ErrorDetails>,
     pub graphs: Vec<Graph>,
+}
+
+#[derive(Deserialize)]
+pub struct GraphDetailsResponse {
+    pub graph: Graph,
 }

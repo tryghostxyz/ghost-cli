@@ -1,4 +1,6 @@
-use crate::types::{GraphConfig, GraphFile};
+use crate::api_service::ApiService;
+use crate::types::{Chain, GraphConfig, GraphFile};
+use dirs::cache_dir;
 use eyre::{eyre, EyreHandler};
 use std::error::Error;
 use std::fs::{self};
@@ -6,8 +8,12 @@ use std::path::{Path, PathBuf};
 use tracing::debug;
 use yansi::Paint;
 
-pub fn check_and_get_conf(required_files: &[&str]) -> eyre::Result<GraphConfig> {
-    if !Path::new("config.json").exists() {
+pub async fn check_and_get_conf(
+    required_files: &[&str],
+    api: &ApiService,
+) -> eyre::Result<GraphConfig> {
+    let path = Path::new("config.json");
+    if !path.exists() {
         return Err(eyre!(
             "config.json not found. This command can only be run in a ghost directory"
         ));
@@ -19,7 +25,16 @@ pub fn check_and_get_conf(required_files: &[&str]) -> eyre::Result<GraphConfig> 
         }
     }
 
-    GraphConfig::read(PathBuf::from("config.json")).map_err(|_| eyre!("cannot read config.json"))
+    let mut graph = GraphConfig::read(PathBuf::from("config.json"))
+        .map_err(|_| eyre!("cannot read config.json"))?;
+    if graph.chain.is_none() {
+        if let Ok(chain) = api.get_graph(&graph.id).await?.chain.try_into() {
+            graph.chain = Some(chain);
+            let _ = graph.write(path.to_path_buf());
+        }
+    }
+
+    Ok(graph)
 }
 
 pub fn check_and_create_dir(dir: &PathBuf) -> eyre::Result<()> {
@@ -46,11 +61,18 @@ pub fn write_sources_and_conf(
     dir: &Path,
     id: String,
     version_id: String,
+    chain: Option<Chain>,
     sources: Vec<GraphFile>,
 ) -> eyre::Result<()> {
     write_files(dir, sources)?;
-    GraphConfig { id, version_id }.write(dir.join("config.json"))?;
+    GraphConfig { id, version_id, chain }.write(dir.join("config.json"))?;
     Ok(())
+}
+
+pub fn cache_path() -> Option<PathBuf> {
+    let path = cache_dir()?.join("ghost");
+    fs::create_dir_all(&path).ok()?;
+    Some(path)
 }
 
 /**

@@ -1,12 +1,12 @@
+use crate::types::{
+    CodegenRequest, CodegenResponse, CompileRequest, CompileResponse, CreateRequest,
+    CreateResponse, DeployResponse, ForkRequest, ForkResponse, Graph, GraphDetailsResponse,
+    GraphFile, ListResponse,
+};
 use eyre::{eyre, Report};
 use reqwest::Client;
 use serde::Deserialize;
 use serde_json::Value;
-
-use crate::types::{
-    CodegenRequest, CodegenResponse, CompileRequest, CompileResponse, CreateRequest,
-    CreateResponse, DeployResponse, ForkRequest, ForkResponse, GraphFile, ListResponse,
-};
 
 pub struct ApiService {
     client: Client,
@@ -71,6 +71,14 @@ impl ApiService {
         Ok(deploy_res)
     }
 
+    pub async fn get_graph(&self, id: &str) -> eyre::Result<Graph> {
+        let url = format!("{}/gg/cli/{}", self.base_url, id);
+        let response = self.client.get(&url).header("GG-KEY", &self.api_key).send().await?;
+        let graph: GraphDetailsResponse = serde_json::from_value(response.json().await?)
+            .map_err(|e| eyre!("Failed to deserialize Graph response: {}", e))?;
+        Ok(graph.graph)
+    }
+
     pub async fn get_graphs(&self) -> eyre::Result<ListResponse> {
         let url = format!("{}/gg/cli/list", self.base_url);
         let response = self.client.get(&url).header("GG-KEY", &self.api_key).send().await?;
@@ -86,7 +94,7 @@ impl ApiService {
             self.client.post(&url).header("GG-KEY", &self.api_key).json(payload).send().await?;
 
         let fork_response: ForkResponseInternal = serde_json::from_value(response.json().await?)
-            .map_err(|e| eyre!("Failed to deserialize DeployResponse: {}", e))?;
+            .map_err(|e| eyre!("Failed to deserialize ForkResponse: {}", e))?;
         fork_response.try_into()
     }
 }

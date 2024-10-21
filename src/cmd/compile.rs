@@ -13,7 +13,7 @@ pub struct CompileCmd {}
 
 impl CompileCmd {
     pub async fn run(self, api: &ApiService) -> eyre::Result<()> {
-        let config = check_and_get_conf(&["src/indexer.sol"])?;
+        let config = check_and_get_conf(&["src/indexer.sol"], api).await?;
         println!("Running compile for id={}", config.version_id);
 
         let payload = CompileRequest { indexer_code: fs::read_to_string("src/indexer.sol")? };

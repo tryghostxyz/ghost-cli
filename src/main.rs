@@ -5,13 +5,15 @@ use dotenv::dotenv;
 
 use api_service::ApiService;
 
-use crate::cmd::{CodegenCmd, CompileCmd, CreateCmd, DeployCmd, ForkCmd, ListCmd};
+use crate::cmd::{CodegenCmd, CompileCmd, CreateCmd, DeployCmd, EventsCommand, ForkCmd, ListCmd};
 use crate::utils::install_handler;
 
+mod abi_processor;
 mod api_service;
 mod cmd;
 mod configure;
 mod constants;
+mod etherscan_client;
 mod types;
 mod utils;
 
@@ -52,6 +54,9 @@ enum Commands {
 
     #[command(about = "Fork a graph")]
     Fork(ForkCmd),
+
+    #[command(about = "Fetch events from contract ABI")]
+    Events(EventsCommand),
 }
 
 #[tokio::main]
@@ -104,6 +109,9 @@ async fn main() -> eyre::Result<()> {
             cmd.run(&api_service).await?;
         }
         Some(Commands::Fork(cmd)) => {
+            cmd.run(&api_service).await?;
+        }
+        Some(Commands::Events(cmd)) => {
             cmd.run(&api_service).await?;
         }
         _ => {}
