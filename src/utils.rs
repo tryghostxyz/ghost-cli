@@ -28,7 +28,7 @@ pub async fn check_and_get_conf(
     let mut graph = GraphConfig::read(PathBuf::from("config.json"))
         .map_err(|_| eyre!("cannot read config.json"))?;
     if graph.chain.is_none() {
-        if let Ok(chain) = api.get_graph(&graph.id).await?.chain.try_into() {
+        if let Ok(chain) = api.get_graph(&graph.version_id).await?.chain.try_into() {
             graph.chain = Some(chain);
             let _ = graph.write(path.to_path_buf());
         }

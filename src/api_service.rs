@@ -72,9 +72,10 @@ impl ApiService {
     }
 
     pub async fn get_graph(&self, id: &str) -> eyre::Result<Graph> {
-        let url = format!("{}/gg/cli/{}", self.base_url, id);
+        let url = format!("{}/gg/cli/graphs/{}", self.base_url, id);
         let response = self.client.get(&url).header("GG-KEY", &self.api_key).send().await?;
-        let graph: GraphDetailsResponse = serde_json::from_value(response.json().await?)
+        let json = response.json().await?;
+        let graph: GraphDetailsResponse = serde_json::from_value(json)
             .map_err(|e| eyre!("Failed to deserialize Graph response: {}", e))?;
         Ok(graph.graph)
     }
