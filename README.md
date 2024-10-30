@@ -77,8 +77,6 @@ This will generate a new directory with the following files:
 - `events.sol`
 - `config.json` (which includes the graph ID and version ID for future commands)
 
-
-
 ### Code Generation
 
 After modifying `schema.sol` and `events.sol`, generate the necessary indexer and related files:
