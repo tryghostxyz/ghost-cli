@@ -60,6 +60,11 @@ Available chains:
 - abstract-testnet
 ```
 
+```bash
+ghost events --api_key <ETHERSCAN_API_KEY> --contract <CONTRACT_ADDRESS> 
+```
+This will return the events from a verified contract that you can be used in your `events.sol` file. 
+
 Example:
 
 ```bash
