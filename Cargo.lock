@@ -1282,7 +1282,7 @@ dependencies = [
 
 [[package]]
 name = "ghost"
-version = "0.0.2"
+version = "0.0.3"
 dependencies = [
  "alloy-chains",
  "alloy-json-abi",
