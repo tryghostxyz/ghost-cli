@@ -1,12 +1,13 @@
-use crate::types::{
-    CodegenRequest, CodegenResponse, CompileRequest, CompileResponse, CreateRequest,
-    CreateResponse, DeployResponse, ForkRequest, ForkResponse, Graph, GraphDetailsResponse,
-    GraphFile, ListResponse,
-};
 use eyre::{eyre, Report};
 use reqwest::Client;
 use serde::Deserialize;
 use serde_json::Value;
+
+use crate::types::{
+    CodegenRequest, CodegenResponse, CompileRequest, CompileResponse, CreateRequest,
+    CreateResponse, DeleteResponse, DeployResponse, ForkRequest, ForkResponse, Graph,
+    GraphDetailsResponse, GraphFile, ListResponse,
+};
 
 pub struct ApiService {
     client: Client,
@@ -97,6 +98,33 @@ impl ApiService {
         let fork_response: ForkResponseInternal = serde_json::from_value(response.json().await?)
             .map_err(|e| eyre!("Failed to deserialize ForkResponse: {}", e))?;
         fork_response.try_into()
+    }
+
+    pub async fn delete_graph(&self, id: &str) -> eyre::Result<DeleteResponse> {
+        let url = format!("{}/gg/cli/graphs/{}/delete", self.base_url, id);
+        let response = self.client.delete(&url).header("GG-KEY", &self.api_key).send().await?;
+
+        let delete_response: DeleteResponseInternal =
+            serde_json::from_value(response.json().await?)
+                .map_err(|e| eyre!("Failed to deserialize DeleteResponse: {}", e))?;
+        delete_response.try_into()
+    }
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct DeleteResponseInternal {
+    pub ok: bool,
+}
+
+impl TryInto<DeleteResponse> for DeleteResponseInternal {
+    type Error = Report;
+
+    fn try_into(self) -> eyre::Result<DeleteResponse> {
+        match self {
+            DeleteResponseInternal { ok: true } => Ok(DeleteResponse {}),
+            _ => Err(eyre!("Unexpected API response")),
+        }
     }
 }
 

@@ -1,9 +1,11 @@
-use crate::constants::*;
-use alloy_chains::Chain as AlloyChain;
-use serde::{Deserialize, Serialize};
+use std::{fmt, fs};
 use std::path::PathBuf;
 use std::str::FromStr;
-use std::{fmt, fs};
+
+use alloy_chains::Chain as AlloyChain;
+use serde::{Deserialize, Serialize};
+
+use crate::constants::*;
 
 #[derive(Copy, Clone, Debug, Serialize, Deserialize)]
 pub enum Chain {
@@ -140,6 +142,9 @@ pub struct CreateResponse {
     pub version_id: String,
     pub sources: Vec<GraphFile>,
 }
+
+#[derive(Debug, Deserialize)]
+pub struct DeleteResponse {}
 
 #[derive(Serialize)]
 pub struct ForkRequest {

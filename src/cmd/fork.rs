@@ -28,6 +28,10 @@ pub struct ForkCmd {
     /// Fork a graph and replace the current config and source files.
     #[arg(long, short)]
     pub replace: bool,
+
+    /// Delete the old graph after fork
+    #[arg(long, short)]
+    pub delete: bool,
 }
 
 impl ForkCmd {
@@ -35,7 +39,7 @@ impl ForkCmd {
         let (dir, id) = if self.replace {
             let conf = GraphConfig::read(PathBuf::from("config.json"))
                 .map_err(|_| eyre!("cannot read config.json. Must be in a Ghost directory"))?;
-            (PathBuf::from("."), self.id.or(Some(conf.id)))
+            (PathBuf::from("."), self.id.or(Some(conf.version_id)))
         } else {
             check_and_create_dir(&self.dir)?;
             (self.dir, self.id)
@@ -52,6 +56,12 @@ impl ForkCmd {
 
         write_sources_and_conf(&dir, resp.id, resp.version_id, None, resp.sources)?;
         println!("done! Check the {:?} directory", dir);
+
+        if self.delete {
+            println!("Deleting the old graph id: {:?}", id);
+            api.delete_graph(&id).await?;
+            println!("Successfully deleted the old graph");
+        }
 
         Ok(())
     }
