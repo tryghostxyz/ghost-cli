@@ -101,7 +101,7 @@ impl ApiService {
     }
 
     pub async fn delete_graph(&self, id: &str) -> eyre::Result<DeleteResponse> {
-        let url = format!("{}/gg/cli/graphs/{}/delete", self.base_url, id);
+        let url = format!("{}/gg/cli/graphs/{}", self.base_url, id);
         let response = self.client.delete(&url).header("GG-KEY", &self.api_key).send().await?;
 
         let delete_response: DeleteResponseInternal =

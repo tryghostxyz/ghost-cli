@@ -58,12 +58,14 @@ Available chains:
 - bera-testnet
 - blast-mainnet
 - abstract-testnet
+- uni-testnet
 ```
 
 ```bash
 ghost events --api_key <ETHERSCAN_API_KEY> --contract <CONTRACT_ADDRESS> 
 ```
-This will return the events from a verified contract that you can be used in your `events.sol` file. 
+
+This will return the events from a verified contract that you can be used in your `events.sol` file.
 
 Example:
 
@@ -118,6 +120,22 @@ Fork an existing graph and create a new directory:
 
 ```bash
 ghost fork --id <graph_id> <directory>
+```
+
+### Fork an Existing Graph And Delete The Old Graph
+
+Fork an existing graph in the current Ghost directory and delete the old graph
+
+```bash
+ghost fork --replace --delete .
+```
+
+### Delete an Existing Graph
+
+Delete an existing graph
+
+```bash
+ghost delete --id <graph_id>
 ```
 
 ## Error Handling
