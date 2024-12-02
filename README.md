@@ -62,7 +62,7 @@ Available chains:
 ```
 
 ```bash
-ghost events --api_key <ETHERSCAN_API_KEY> --contract <CONTRACT_ADDRESS> 
+ghost events --api_key <ETHERSCAN_API_KEY> --address <CONTRACT_ADDRESS> 
 ```
 
 This will return the events from a verified contract that you can be used in your `events.sol` file.
