@@ -14,9 +14,13 @@ pub enum Chain {
     BaseMainnet,
     BaseSepolia,
     BeraTestnet,
+    Berachain,
     BlastMainnet,
     AbstractTestnet,
+    Abstract,
     UniTestnet,
+    Unichain,
+    MonadTestnet,
 }
 
 impl Chain {
@@ -27,9 +31,13 @@ impl Chain {
             Chain::BaseMainnet => CHAIN_BASE,
             Chain::BaseSepolia => CHAIN_BASE_TESTNET,
             Chain::BeraTestnet => CHAIN_BERA_TESTNET,
+            Chain::Berachain => CHAIN_BERA_MAINNET,
             Chain::BlastMainnet => CHAIN_BLAST,
             Chain::AbstractTestnet => CHAIN_ABS_TESTNET,
+            Chain::Abstract => CHAIN_ABS_MAINNET,
             Chain::UniTestnet => CHAIN_UNI_TESTNET,
+            Chain::Unichain => CHAIN_UNI_MAINNET,
+            Chain::MonadTestnet => CHAIN_MONAD_TESTNET,
         }
     }
 
@@ -43,10 +51,14 @@ impl Chain {
             "sepolia",
             "base",
             "base-testnet",
+            "bera-testnet",
             "bera",
             "blast",
+            "abstract-testnet",
             "abstract",
             "uni-testnet",
+            "unichain",
+            "monad-testnet",
         ]
     }
 }
@@ -67,9 +79,13 @@ impl TryFrom<u64> for Chain {
             CHAIN_BASE => Ok(Self::BaseMainnet),
             CHAIN_BASE_TESTNET => Ok(Self::BaseSepolia),
             CHAIN_BERA_TESTNET => Ok(Self::BeraTestnet),
+            CHAIN_BERA_MAINNET => Ok(Self::Berachain),
             CHAIN_BLAST => Ok(Self::BlastMainnet),
             CHAIN_ABS_TESTNET => Ok(Self::AbstractTestnet),
+            CHAIN_ABS_MAINNET => Ok(Self::Abstract),
             CHAIN_UNI_TESTNET => Ok(Self::UniTestnet),
+            CHAIN_UNI_MAINNET => Ok(Self::Unichain),
+            CHAIN_MONAD_TESTNET => Ok(Self::MonadTestnet),
             _ => Err(format!("Unsupported chain id: {}", value)),
         }
     }
@@ -88,10 +104,14 @@ impl FromStr for Chain {
                 "eth-sepolia" | "sepolia" => Ok(Self::EthSepolia),
                 "base-mainnet" | "base" => Ok(Self::BaseMainnet),
                 "base-sepolia" | "base-testnet" => Ok(Self::BaseSepolia),
-                "bera-testnet" | "bera" => Ok(Self::BeraTestnet),
+                "bera-testnet" => Ok(Self::BeraTestnet),
+                "berachain" | "bera" => Ok(Self::Berachain),
                 "blast-mainnet" | "blast" => Ok(Self::BlastMainnet),
-                "abstract-testnet" | "abstract" => Ok(Self::AbstractTestnet),
+                "abstract-testnet" => Ok(Self::AbstractTestnet),
+                "abstract" => Ok(Self::Abstract),
                 "uni-testnet" => Ok(Self::UniTestnet),
+                "unichain" => Ok(Self::Unichain),
+                "monad-testnet" => Ok(Self::MonadTestnet),
                 _ => Err(format!(
                     "Unsupported chain name: {}. Valid options are: {}",
                     s,
